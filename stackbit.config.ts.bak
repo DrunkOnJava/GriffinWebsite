@@ -1,0 +1,267 @@
+/**
+ * Stackbit Configuration File
+ * 
+ * Created for: ProfessionalWebsiteGriffin
+ * Netlify Site: griffin-radcliffe.netlify.app
+ * GitHub Repository: DrunkOnJava/GriffinWebsite
+ */
+
+import { defineStackbitConfig, SiteMapEntry } from "@stackbit/types";
+import { GitContentSource } from "@stackbit/cms-git";
+
+export default defineStackbitConfig({
+  stackbitVersion: "~0.6.0",
+  ssgName: "custom",
+  nodeVersion: "18",
+  
+  // Netlify-specific configuration
+  deploymentType: "netlify",
+  previewHost: "griffin-radcliffe.netlify.app",
+  
+  contentSources: [
+    new GitContentSource({
+      rootPath: __dirname,
+      contentDirs: ["content"],
+      assetsConfig: {
+        referenceType: "static",
+        staticDir: "public",
+        uploadDir: "public/images",
+        publicPath: "/images/"
+      },
+      models: [
+        // Page Models
+        {
+          name: "Page",
+          type: "page",
+          urlPath: "/{slug}",
+          filePath: "content/pages/{slug}.md",
+          fields: [
+            { name: "title", type: "string", required: true },
+            { name: "slug", type: "string", required: true },
+            { name: "layout", type: "string", default: "page" },
+            { name: "seo", type: "model", modelName: "SEO" },
+            {
+              name: "sections",
+              type: "list",
+              items: {
+                type: "model",
+                models: ["Hero", "Features", "CallToAction", "ContactForm"]
+              }
+            }
+          ]
+        },
+        {
+          name: "BlogPost",
+          type: "page",
+          urlPath: "/blog/{slug}",
+          filePath: "content/blog/{slug}.md",
+          fields: [
+            { name: "title", type: "string", required: true },
+            { name: "slug", type: "string", required: true },
+            { name: "layout", type: "string", default: "post" },
+            { name: "author", type: "reference", models: ["Author"] },
+            { name: "date", type: "date", required: true },
+            { name: "featuredImage", type: "image" },
+            { name: "excerpt", type: "string" },
+            { name: "content", type: "markdown", required: true },
+            { name: "tags", type: "list", items: { type: "string" } },
+            { name: "seo", type: "model", modelName: "SEO" }
+          ]
+        },
+        
+        // Component Models
+        {
+          name: "Hero",
+          type: "object",
+          fields: [
+            { name: "type", type: "string", default: "Hero", hidden: true },
+            { name: "heading", type: "string", required: true },
+            { name: "subheading", type: "string" },
+            { name: "image", type: "image" },
+            {
+              name: "actions",
+              type: "list",
+              items: { type: "model", models: ["Button"] }
+            }
+          ]
+        },
+        {
+          name: "Features",
+          type: "object",
+          fields: [
+            { name: "type", type: "string", default: "Features", hidden: true },
+            { name: "title", type: "string" },
+            { name: "subtitle", type: "string" },
+            {
+              name: "features",
+              type: "list",
+              items: { type: "model", models: ["Feature"] }
+            }
+          ]
+        },
+        {
+          name: "Feature",
+          type: "object",
+          fields: [
+            { name: "title", type: "string", required: true },
+            { name: "description", type: "string" },
+            { name: "icon", type: "string" },
+            { name: "image", type: "image" }
+          ]
+        },
+        {
+          name: "CallToAction",
+          type: "object",
+          fields: [
+            { name: "type", type: "string", default: "CallToAction", hidden: true },
+            { name: "title", type: "string", required: true },
+            { name: "text", type: "string" },
+            { name: "actions", type: "list", items: { type: "model", models: ["Button"] } }
+          ]
+        },
+        {
+          name: "Button",
+          type: "object",
+          fields: [
+            { name: "label", type: "string", required: true },
+            { name: "url", type: "string", required: true },
+            { name: "variant", type: "enum", options: ["primary", "secondary", "ghost"], default: "primary" }
+          ]
+        },
+        {
+          name: "ContactForm",
+          type: "object",
+          fields: [
+            { name: "type", type: "string", default: "ContactForm", hidden: true },
+            { name: "title", type: "string" },
+            { name: "fields", type: "list", items: { type: "model", models: ["FormField"] } },
+            { name: "submitLabel", type: "string", default: "Submit" },
+            { name: "netlify", type: "boolean", default: true },
+            { name: "formName", type: "string", default: "contact" }
+          ]
+        },
+        {
+          name: "FormField",
+          type: "object",
+          fields: [
+            { name: "name", type: "string", required: true },
+            { name: "label", type: "string", required: true },
+            { name: "type", type: "enum", options: ["text", "email", "textarea", "select", "checkbox"], required: true },
+            { name: "required", type: "boolean", default: false },
+            { name: "options", type: "list", items: { type: "string" } }
+          ]
+        },
+        
+        // Data Models
+        {
+          name: "Author",
+          type: "data",
+          filePath: "content/data/authors/{slug}.json",
+          fields: [
+            { name: "name", type: "string", required: true },
+            { name: "slug", type: "string", required: true },
+            { name: "bio", type: "markdown" },
+            { name: "avatar", type: "image" },
+            { name: "socialLinks", type: "list", items: { type: "model", models: ["SocialLink"] } }
+          ]
+        },
+        {
+          name: "SocialLink",
+          type: "object",
+          fields: [
+            { name: "platform", type: "enum", options: ["twitter", "linkedin", "github", "facebook", "instagram"] },
+            { name: "url", type: "string", required: true }
+          ]
+        },
+        {
+          name: "SEO",
+          type: "object",
+          fields: [
+            { name: "metaTitle", type: "string" },
+            { name: "metaDescription", type: "string" },
+            { name: "metaImage", type: "image" },
+            { name: "canonicalUrl", type: "string" },
+            { name: "noindex", type: "boolean", default: false }
+          ]
+        },
+        // Site config for global settings
+        {
+          name: "SiteConfig",
+          type: "data",
+          singleInstance: true,
+          filePath: "content/data/config.json",
+          fields: [
+            { name: "title", type: "string", required: true },
+            { name: "description", type: "string" },
+            { name: "header", type: "model", models: ["Header"] },
+            { name: "footer", type: "model", models: ["Footer"] }
+          ]
+        },
+        {
+          name: "Header",
+          type: "object",
+          fields: [
+            { name: "logo", type: "image" },
+            { name: "logoAlt", type: "string" },
+            { name: "navigationLinks", type: "list", items: { type: "model", models: ["NavigationLink"] } }
+          ]
+        },
+        {
+          name: "Footer",
+          type: "object",
+          fields: [
+            { name: "copyright", type: "string" },
+            { name: "socialLinks", type: "list", items: { type: "model", models: ["SocialLink"] } },
+            { name: "navigationLinks", type: "list", items: { type: "model", models: ["NavigationLink"] } }
+          ]
+        },
+        {
+          name: "NavigationLink",
+          type: "object",
+          fields: [
+            { name: "label", type: "string", required: true },
+            { name: "url", type: "string", required: true },
+            { name: "newTab", type: "boolean", default: false }
+          ]
+        }
+      ]
+    })
+  ],
+  
+  // Custom sitemap implementation
+  siteMap: ({ documents, models }) => {
+    // Find all page models
+    const pageModels = models.filter((model) => model.type === "page");
+    
+    // Generate entries for each document that matches a page model
+    const entries = documents
+      .filter((document) => pageModels.some((model) => model.name === document.modelName))
+      .map((document): SiteMapEntry | null => {
+        // Generate appropriate URL paths based on document model
+        switch (document.modelName) {
+          case 'Page':
+            return {
+              stableId: document.id,
+              urlPath: `/${document.fields.slug || ''}`,
+              document,
+              // Set home page by checking for 'home' or 'index' slug
+              isHomePage: document.fields.slug === 'home' || document.fields.slug === 'index' || document.fields.slug === '',
+            };
+            
+          case 'BlogPost':
+            return {
+              stableId: document.id,
+              urlPath: `/blog/${document.fields.slug || ''}`,
+              document,
+              isHomePage: false,
+            };
+            
+          default:
+            return null;
+        }
+      })
+      .filter(Boolean) as SiteMapEntry[];
+      
+    return entries;
+  }
+});

@@ -11,7 +11,9 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@stackbit/cli": "^0.3.133",
+    "@stackbit/cli": "^0.6.0",
+    "@stackbit/cms-git": "^0.4.0",
+    "@stackbit/types": "^0.6.0",
     "typescript": "^5.0.0"
   }
 }

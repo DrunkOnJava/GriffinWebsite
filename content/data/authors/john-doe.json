@@ -1,0 +1,16 @@
+{
+  "name": "John Doe",
+  "slug": "john-doe",
+  "bio": "John is a senior developer with over 10 years of experience in web development.",
+  "avatar": "/images/authors/john-doe.jpg",
+  "socialLinks": [
+    {
+      "platform": "twitter",
+      "url": "https://twitter.com/johndoe"
+    },
+    {
+      "platform": "github",
+      "url": "https://github.com/johndoe"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "title": "ProfessionalWebsiteGriffin",
+  "description": "Official website for ProfessionalWebsiteGriffin",
+  "header": {
+    "logo": "/images/logo.svg",
+    "logoAlt": "ProfessionalWebsiteGriffin Logo",
+    "navigationLinks": [
+      {
+        "label": "Home",
+        "url": "/"
+      },
+      {
+        "label": "About",
+        "url": "/about"
+      },
+      {
+        "label": "Blog",
+        "url": "/blog"
+      },
+      {
+        "label": "Contact",
+        "url": "/contact"
+      }
+    ]
+  },
+  "footer": {
+    "copyright": "© 2025 ProfessionalWebsiteGriffin. All rights reserved.",
+    "socialLinks": [
+      {
+        "platform": "twitter",
+        "url": "https://twitter.com/professionalwebsitegriffin"
+      },
+      {
+        "platform": "facebook",
+        "url": "https://facebook.com/professionalwebsitegriffin"
+      }
+    ],
+    "navigationLinks": [
+      {
+        "label": "Privacy Policy",
+        "url": "/privacy"
+      },
+      {
+        "label": "Terms of Service",
+        "url": "/terms"
+      }
+    ]
+  }
+}
